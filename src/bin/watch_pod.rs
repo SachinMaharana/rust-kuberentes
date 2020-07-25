@@ -8,7 +8,8 @@ use kube_runtime::watcher;
 async fn main() -> Result<()> {
     let config = Config::infer().await?;
     let client = Client::new(config);
-    let api = Api::<Pod>::all(client);
+    // let api = Api::<Pod>::all(client);
+    let api = Api::<Pod>::namespaced(client, "default");
     let watcher = watcher(api, ListParams::default());
     watcher
         .try_for_each(|e| async move {
